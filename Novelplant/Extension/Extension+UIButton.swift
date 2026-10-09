@@ -26,33 +26,31 @@ extension UIButton {
         titleLabel?.font = font
     }
     
-    // 自动调整按钮中的图文位置
+    // 自动调整按钮中的图文位置（iOS 15+ 基于 UIButtonConfiguration 实现）
+    // 注意：请在调用本方法前先完成 setTitle/setImage/setTitleColor/titleLabel?.font 等内容设置
     func adjustImageTitlePosition(_ alignment: ImageTitleAlignment, spacing: CGFloat) {
-        
-        let imageWidth = self.imageView?.image?.size.width
-        let imageHeight = self.imageView?.image?.size.height
-        
-        let labelWidth = self.titleLabel?.intrinsicContentSize.width
-        let labelHeight = self.titleLabel?.intrinsicContentSize.height
-        
+        var config = self.configuration ?? .plain()
+        // 把此前通过 legacy API 设置的标题/图片迁移进 configuration，避免两套体系不同步
+        if config.attributedTitle == nil, let attrTitle = attributedTitle(for: .normal) {
+            config.attributedTitle = AttributedString(attrTitle)
+        } else if config.title == nil, let title = title(for: .normal) {
+            config.title = title
+        }
+        if config.image == nil, let image = image(for: .normal) {
+            config.image = image
+        }
         switch alignment {
         case .top:
-            imageEdgeInsets = UIEdgeInsets(top: -labelHeight!-spacing/2, left: 0, bottom: 0, right: -labelWidth!)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth!, bottom: -imageHeight!-spacing/2, right: 0)
-            
+            config.imagePlacement = .top
         case .left:
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: -spacing/2, bottom: 0, right: spacing)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: spacing/2, bottom: 0, right: -spacing/2)
-            
+            config.imagePlacement = .leading
         case .bottom:
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: -labelHeight!-spacing/2, right: -labelWidth!)
-            titleEdgeInsets = UIEdgeInsets(top: -imageHeight!-spacing/2, left: -imageWidth!, bottom: 0, right: 0)
-            
+            config.imagePlacement = .bottom
         case .right:
-            imageEdgeInsets = UIEdgeInsets(top: 0, left: labelWidth!+spacing/2, bottom: 0, right: -labelWidth!-spacing/2)
-            titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth!-spacing/2, bottom: 0, right: imageWidth!+spacing/2)
-            
+            config.imagePlacement = .trailing
         }
+        config.imagePadding = spacing
+        self.configuration = config
     }
 }
 
@@ -60,18 +58,19 @@ extension UIButton {
 extension UIButton {
     
     private struct ButtonBadgeKey {
-        static var badgeKey = "badgeKey"
-        static var badgeBGColorKey = "badgeBGColorKey"
-        static var badgeTextColorKey = "badgeTextColorKey"
-        static var badgeFontKey = "badgeFontKey"
-        static var badgePaddingKey = "badgePaddingKey"
-        static var badgeMinHeightKey = "badgeMinHeightKey"
-        static var badgeMaxWidthKey = "badgeMaxWidthKey"
-        static var badgeCenterXKey = "badgeCenterXKey"
-        static var badgeCenterYKey = "badgeCenterYKey"
-        static var shouldAnimateBadgeKey = "shouldAnimateBadgeKey"
-        static var shouldHideBadgeKey = "shouldHideBadgeKey"
-        static var badgeValueKey = "badgeValueKey"
+        // 仅取地址作为关联对象的 key（唯一且稳定），不使用其值
+        static var badgeKey: UInt8 = 0
+        static var badgeBGColorKey: UInt8 = 0
+        static var badgeTextColorKey: UInt8 = 0
+        static var badgeFontKey: UInt8 = 0
+        static var badgePaddingKey: UInt8 = 0
+        static var badgeMinHeightKey: UInt8 = 0
+        static var badgeMaxWidthKey: UInt8 = 0
+        static var badgeCenterXKey: UInt8 = 0
+        static var badgeCenterYKey: UInt8 = 0
+        static var shouldAnimateBadgeKey: UInt8 = 0
+        static var shouldHideBadgeKey: UInt8 = 0
+        static var badgeValueKey: UInt8 = 0
     }
     
     ///角标label

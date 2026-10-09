@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 // Mark: - 全局属性
 var statusBarHeight: CGFloat {
     return safeAreaTopSpace
@@ -29,7 +30,9 @@ var currentViewController: UIViewController {
     var window = keyWindow
     
     if window?.windowLevel != UIWindow.Level.normal  {
-        let windows = UIApplication.shared.windows
+        let windows = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
         for tmpWin in windows {
             if tmpWin.windowLevel == UIWindow.Level.normal {
                 window = tmpWin

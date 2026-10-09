@@ -1,8 +1,8 @@
 //
 //  User.swift
-//  Moyi
+//  novelplant
 //
-//  Created by hehe on 2023/3/15.
+//  Created by hehe on 2026/10/9.
 //
 
 import Foundation
@@ -16,17 +16,6 @@ class User: Convertible {
 //        id = memberInfoVo?.id ?? ""
 //        avatar = memberInfoVo?.avatar ?? ""
 //        beforeGrowth = memberInfoVo?.beforeGrowth ?? 0
-//        growth = memberInfoVo?.growth ?? 0
-//        hasPassword = memberInfoVo?.hasPassword ?? false
-//        hasSendLogOff = memberInfoVo?.hasSendLogOff ?? ""
-//        levelImage = memberInfoVo?.levelImage ?? ""
-//        levelName = memberInfoVo?.levelName ?? ""
-//        memberLevelId = memberInfoVo?.memberLevelId ?? 0
-//        nextLevelGrowth = memberInfoVo?.nextLevelGrowth ?? 0
-//        nextLevelName = memberInfoVo?.nextLevelName ?? ""
-//        nickName = memberInfoVo?.nickName ?? ""
-//        openId = memberInfoVo?.openId ?? ""
-//        userPhone = memberInfoVo?.userPhone ?? ""
     }
     
 
@@ -63,4 +52,3 @@ class User: Convertible {
         return user
     }
 }
-

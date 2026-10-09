@@ -145,7 +145,7 @@ func NetWorkRequest(_ target: TargetType, completion: @escaping successCallback,
         //提示用户网络似乎出现了问题
 //        MCToastManager.makeToast("网络错误")
         errorResult?()
-        failed?("网络错误", 88888)
+        failed?(NSLocalizedString("network_error", comment: ""), 88888)
         return nil
     }
 
@@ -181,57 +181,17 @@ func NetWorkRequest(_ target: TargetType, completion: @escaping successCallback,
                         
                     } else if let code = jsonDic[RESULT_CODE] as? Int, code == 401 {
                         //登录过期
-                        MCToastManager.makeToast("登录失效，请重新登录")
+                        XHToastManager.makeToast(NSLocalizedString("login_failed_retry", comment: ""))
                         User.deleteUser()
                         
                         if !isLogin {
                             gotoLogin()
                         }
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 1001 {
-                        MCToastManager.hideToastActivity()
-                        //项目dao审核任务--名额已满
+                    }
+                    else {
+                        XHToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? NSLocalizedString("network_error", comment: ""))
                         if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 2002 {
-                        MCToastManager.hideToastActivity()
-                        //项目dao审核任务--资金不足
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                        
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 1006 {
-                        MCToastManager.hideToastActivity()
-                        //项目dao结束任务--当前有待结项任务
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                        
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 1007 {
-                        MCToastManager.hideToastActivity()
-                        //项目dao结束任务--当前有报名待审核成员
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                        
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 1003 {
-                        MCToastManager.hideToastActivity()
-                        //解散项目dao--当前有待结项任务
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                        
-                    } else if let code = jsonDic[RESULT_CODE] as? Int, code == 515 {
-                        MCToastManager.hideToastActivity()
-                        //微信苹果登录--已经绑定手机
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
-                        }
-                        
-                    } else {
-                        MCToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误")
-                        if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
+                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? NSLocalizedString("network_error", comment: ""), jsonDic[RESULT_CODE] as? Int ?? 0)
                         }
                     }
                 }
@@ -245,16 +205,16 @@ func NetWorkRequest(_ target: TargetType, completion: @escaping successCallback,
                 if let cancel = afError.asAFError?.isExplicitlyCancelledError, cancel == true {
                     print("主动取消")
                     errorResult?()
-                    failed?("网络错误", 88888)
+                    failed?(NSLocalizedString("network_error", comment: ""), 88888)
                     
                     return
                 }
             }
             
             //提示用户网络似乎出现了问题
-            MCToastManager.makeToast("网络错误")
+            XHToastManager.makeToast(NSLocalizedString("network_error", comment: ""))
             errorResult?()
-            failed?("网络错误", 88888)
+            failed?(NSLocalizedString("network_error", comment: ""), 88888)
             print(error)
         }
     }
@@ -272,7 +232,7 @@ func NetWorkRequestWithAnyCode(_ target: TargetType, completion: @escaping succe
     if !isNetworkConnect {
         //提示用户网络似乎出现了问题
 //        MCToastManager.makeToast("网络错误")
-        failed?("网络错误", 88888)
+        failed?(NSLocalizedString("network_error", comment: ""), 88888)
         return nil
     }
     return Provider.request(MultiTarget(target)) { result in
@@ -307,16 +267,16 @@ func NetWorkRequestWithAnyCode(_ target: TargetType, completion: @escaping succe
                         
                     } else if let code = jsonDic[RESULT_CODE] as? Int, code == 401 {
                         //登录过期
-                        MCToastManager.makeToast("登录失效，请重新登录")
+                        XHToastManager.makeToast("登录失效，请重新登录")
                         User.deleteUser()
                         
                         if !isLogin {
                             gotoLogin()
                         }
                     }  else {
-                        MCToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误")
+                        XHToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? NSLocalizedString("network_error", comment: ""))
                         if let failed = failed {
-                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误", jsonDic[RESULT_CODE] as? Int ?? 0)
+                            failed((jsonDic[RESULT_MESSAGE] as? String) ?? NSLocalizedString("network_error", comment: ""), jsonDic[RESULT_CODE] as? Int ?? 0)
                         }
                     }
 
@@ -328,8 +288,8 @@ func NetWorkRequestWithAnyCode(_ target: TargetType, completion: @escaping succe
         case let .failure(error):
             print(error)
             //提示用户网络似乎出现了问题
-            MCToastManager.makeToast("网络错误")
-            failed?("网络错误", 88888)
+            XHToastManager.makeToast(NSLocalizedString("network_error", comment: ""))
+            failed?(NSLocalizedString("network_error", comment: ""), 88888)
         }
     }
 }
@@ -344,7 +304,7 @@ func NetWorkRequestWithAllData(_ target: TargetType, completion: @escaping succe
     
     if !isNetworkConnect {
         //提示用户网络似乎出现了问题
-        MCToastManager.makeToast("网络似乎出现了问题")
+        XHToastManager.makeToast("网络似乎出现了问题")
         return nil
     }
         
@@ -378,14 +338,14 @@ func NetWorkRequestWithAllData(_ target: TargetType, completion: @escaping succe
                         
                     } else if let code = jsonDic[RESULT_CODE] as? Int, code == 401 {
                         //登录过期
-                        MCToastManager.makeToast("登录失效，请重新登录")
+                        XHToastManager.makeToast("登录失效，请重新登录")
                         User.deleteUser()
                         
                         if !isLogin {
                             gotoLogin()
                         }
                     }  else {
-                        MCToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? "网络错误")
+                        XHToastManager.makeToast((jsonDic[RESULT_MESSAGE] as? String) ?? NSLocalizedString("network_error", comment: ""))
                         print("网络请求失败\(response.request!.url!)")
                     }
 
@@ -396,7 +356,7 @@ func NetWorkRequestWithAllData(_ target: TargetType, completion: @escaping succe
         case let .failure(error):
             print(error)
             //提示用户网络似乎出现了问题
-            MCToastManager.makeToast("网络错误")
+            XHToastManager.makeToast(NSLocalizedString("network_error", comment: ""))
             print("网络请求失败\(target.path)")
         }
     }

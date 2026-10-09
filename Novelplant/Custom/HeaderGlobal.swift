@@ -1,15 +1,14 @@
 //
-//  GlobalHeader.swift
-//  Moyi
+//  HeaderGlobal.swift
+//  novelplant
 //
-//  Created by mac on 2023/3/13.
+//  Created by hehe on 2026/10/9.
 //
 
 import Foundation
 
 @_exported import Alamofire
 @_exported import MJRefresh
-@_exported import SnapKit
 @_exported import Kingfisher
 @_exported import KakaJSON
 @_exported import Moya
@@ -20,4 +19,3 @@ import Foundation
 @_exported import JXPagingView
 @_exported import EmptyDataSet_Swift
 @_exported import RealmSwift
-

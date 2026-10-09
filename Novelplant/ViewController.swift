@@ -11,7 +11,10 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        let label = UILabel(frame: CGRect(x: 100, y: 100, width: 100, height: 100));
+        label.textColor = .black
+        label.text = NSLocalizedString("asd", comment: "asd");
+        view.addSubview(label)
     }
 
 

@@ -1,20 +1,18 @@
 //
 //  ToastManager.swift
-//  Moyi
+//  novelplant
 //
-//  Created by hehe on 2023/3/9.
+//  Created by hehe on 2026/10/9.
 //
 
 import Foundation
-import UIKit
 
-class MCToastManager {
-    
+class XHToastManager{
     static func makeToast(_ message: String) {
         if message.isEmpty {
             return
         }
-        MCToastManager.hideToastActivity()
+        XHToastManager.hideToastActivity()
         keyWindow?.makeToast(message)
     }
     
@@ -25,6 +23,4 @@ class MCToastManager {
     static func hideToastActivity() {
         keyWindow?.hideToastActivity()
     }
-    
-    
 }
