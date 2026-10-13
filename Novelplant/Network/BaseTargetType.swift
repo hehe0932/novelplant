@@ -9,16 +9,27 @@ import Foundation
 import Moya
 
 extension TargetType {
-    //请求header
-    var headers: [String: String]? {
 
-        let token = User.currentUser().token
-        if !token.isEmpty {
-            print(token)
-            return ["Authorization": "Bearer \(token)", "appId": "123456", "appVersion": appVersion, "os": "ios"]
+    var headers: [String: String]? {
+        
+//        let token = User.currentUser().token
+        //TODO
+        let token = "eyJ0eXBlIjogIkpXVCIsICJhbGciOiAiSFMyNTYifQ==.eyJhY2NvdW50X2lkIjogMTA3NjcyMywgImV4cGlyZWQiOiAxNzkyNDYzMzczLjA5Mjg5OX0=.+Oe9TwpxuT03ZkF4RZLQfnBIU+4ZL1r70t/8TJvNABg="
+        if token.isEmpty  {
+            return [
+                "User-Agent": HttpCommonParam.userAgent(),
+                "Accept-Encoding": "gzip",
+                "Content-Encoding": "gzip",
+            ]
         }
         
-        return ["appId": "123456", "appVersion": appVersion, "os": "ios"]
+        return [
+            "Authorization": "Bearer \(token)",
+            "User-Agent": HttpCommonParam.userAgent(),
+            "Accept-Encoding": "gzip",
+            "Content-Encoding": "gzip",
+        ]
+        
     }
     
     //base请求路径
@@ -33,7 +44,7 @@ extension TargetType {
     
     //获取请求时间
     func requestTime() -> Double {
-        return 30
+        return 10
     }
 
 }

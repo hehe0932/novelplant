@@ -1,13 +1,13 @@
 //
-//  LoginViewController.swift
+//  RewardsViewController.swift
 //  novelplant
 //
-//  Created by hehe on 2026/10/9.
+//  Created by hehe on 2026/10/10.
 //
 
 import UIKit
 
-class LoginViewController: BaseViewController {
+class RewardsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

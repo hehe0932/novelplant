@@ -22,11 +22,10 @@ let keyWindow = UIApplication.shared.connectedScenes
 
 struct Const {
 
-    static let appStoreUrl = "itms-apps://itunes.apple.com/app/id6446924173" //https://apps.apple.com/app/id6446924173
-    ///新版本的版本号
-    static let levelupVersionCodeKey = "levelupVersionCodeKey"
-    
-    static let imAppID = Int32(123456)
+    static let appStoreUrl = "itms-apps://itunes.apple.com/app/id1234" //https://apps.apple.com/app/id1234
+    ///内置书籍
+    static let isLoadedInitBook = "isLoadedInitBookKey"
+
     
 #if DEBUG
     static let serviceID = "1626491127777947650"

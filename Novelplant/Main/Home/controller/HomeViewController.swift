@@ -9,8 +9,73 @@ import UIKit
 
 class HomeViewController: BaseViewController {
 
+    private var categoryArray = [HomeCategory]()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = .white
+        navigationItem.titleView = titleView
+        titleView.addSubview(searchButton)
+        titleView.addSubview(giftButton)
+        
+        searchButton.snp.makeConstraints { make in
+            make.left.equalTo(12)
+            // 不用 screenW 绝对宽度：titleView 实际宽度由导航栏的标题区域决定，
+            // 右边直接锚到礼物按钮左侧，随 titleView 宽度自适应
+            make.right.equalTo(giftButton.snp.left).offset(-8)
+            make.height.equalTo(30)
+            make.centerY.equalToSuperview()
+        }
+        
+        giftButton.snp.makeConstraints { make in
+            make.right.equalTo(-12)
+            make.size.equalTo(44)
+            make.centerY.equalToSuperview()
+        }
+        
+        titleView.snp.makeConstraints { make in
+            make.height.equalTo(44)
+            make.width.equalTo(screenW)
+        }
+        
+        NetWorkRequest(HomeManager.category) { result in
+
+            guard let data = result as? [[String: Any]] else { return }
+            self.categoryArray = data.kj.modelArray(HomeCategory.self)
+            var nameArray = [String]()
+            self.categoryArray.forEach { model in
+                if model.name == "Genres" {
+                    model.name = NSLocalizedString("Genres", comment: "")
+                } else if model.name == "Rankings" {
+                    model.name = NSLocalizedString("Rankings", comment: "")
+                }
+                
+                nameArray.append(model.name)
+            }
+            self.segmentedDataSource.titles = nameArray
+            self.view.addSubview(self.segmentView)
+            self.view.addSubview(self.listContainerView)
+        }
+    }
+
+    // MARK: - Actions
+    @objc func searchButtonDidClick() {
+        print("asdasdasd");
+        // TODO: 跳转搜索页
+        XHToastManager.makeToast(NSLocalizedString("Coming soon", comment: ""))
+    }
+
+    @objc func giftButtonDidClick() {
+        // TODO: 跳转礼包/兑换页
+        XHToastManager.makeToast(NSLocalizedString("Coming soon", comment: ""))
+    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print("aaaa")
+    }
+    
     private lazy var titleView: UIView = {
-        let titleView = UIView()
+        let titleView = UIView(frame: CGRectMake(0, 0, screenW, 44))
         titleView.backgroundColor = .white
         return titleView
     }()
@@ -42,50 +107,66 @@ class HomeViewController: BaseViewController {
         btn.addTarget(self, action: #selector(giftButtonDidClick), for: .touchUpInside)
         return btn
     }()
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    private lazy var segmentView: JXSegmentedView = {
+        let segmentView = JXSegmentedView(frame: CGRect(x: 0, y: navHeight, width: screenW, height: 64))
+        segmentView.dataSource = segmentedDataSource
+        segmentView.delegate = self
+        segmentView.listContainer = listContainerView
+        return segmentView
+    }()
 
-        view.backgroundColor = .white
-        titleView.addSubview(searchButton)
-        titleView.addSubview(giftButton)
+    private lazy var segmentedDataSource: JXSegmentedTitleDataSource = {
+        let segmentedDataSource = JXSegmentedTitleDataSource()
+        segmentedDataSource.titleNormalColor = .textPrimaryColor
+        segmentedDataSource.titleSelectedColor = .themeColor
+        segmentedDataSource.isTitleColorGradientEnabled = true
+        segmentedDataSource.titleNormalFont = UIFont.boldSystemFont(ofSize: 16)
+        segmentedDataSource.titleSelectedFont = UIFont.boldSystemFont(ofSize: 18)
         
-        searchButton.snp.makeConstraints { make in
-            make.left.equalTo(12)
-            make.width.equalTo(screenW - 100)
-            make.height.equalTo(30)
-            make.centerY.equalToSuperview()
-        }
-        
-        giftButton.snp.makeConstraints { make in
-            make.right.equalTo(-12)
-            make.size.equalTo(44)
-            make.centerY.equalToSuperview()
-        }
-        
-        // titleView 是裸 UIView 没有内在尺寸；子控件用的是 centerY（不产生高度），
-        // 必须显式给高度，否则高度塌成 0：按钮画得出来（不裁剪）但 hitTest 进不了 bounds，点不响应。
-        // 顺序很重要：高度约束必须装在赋值 navigationItem.titleView 之前——赋值那一刻
-        // UIKit 会用当时测得的默认标题高度（≈22）把 _UINavigationBarTitleControl 用
-        // required 级 autoresizing 约束焊死，事后再补 height==44 必然与之冲突（breaking constraint 警告）
-        titleView.snp.makeConstraints { make in
-            make.height.equalTo(44)
-        }
-        navigationItem.titleView = titleView
-    }
+        segmentedDataSource.isItemSpacingAverageEnabled = false
+        segmentedDataSource.itemSpacing = 30
+        return segmentedDataSource
+    }()
+    
+    private lazy var listContainerView: JXSegmentedListContainerView = {
+        let containerView = JXSegmentedListContainerView(dataSource: self)
+        containerView.frame = CGRect(x: 0, y: statusBarHeight + 108, width: screenW, height: screenH - statusBarHeight - 108)
+        return containerView
+    }()
+}
 
-    // MARK: - Actions
-    @objc func searchButtonDidClick() {
-        print("asdasdasd");
-        // TODO: 跳转搜索页
-        XHToastManager.makeToast(NSLocalizedString("Coming soon", comment: ""))
-    }
 
-    @objc func giftButtonDidClick() {
-        // TODO: 跳转礼包/兑换页
-        XHToastManager.makeToast(NSLocalizedString("Coming soon", comment: ""))
+extension HomeViewController: JXSegmentedListContainerViewDataSource, JXSegmentedViewDelegate {
+    func numberOfLists(in listContainerView: JXSegmentedListContainerView) -> Int {
+        categoryArray.count
     }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("aaaa")
+    
+    func listContainerView(_ listContainerView: JXSegmentedListContainerView, initListAt index: Int) -> any JXSegmentedListContainerViewListDelegate {
+        let model = categoryArray[index]
+        if model.type == 1 {
+            //model.code==2是排行页面  model.code==3是分类页面
+            if model.code == "2" {
+                return RankingsViewController()
+            } else if model.code == "3" {
+                return GentresViewController()
+            } else {
+                let vc = HomeSubViewController()
+                vc.code = model.code
+                vc.name = model.name
+                return vc
+                
+            }
+            
+        } else {
+            
+            let vc = HomeSubViewController()
+            vc.code = model.code
+            vc.name = model.name
+            if index == 0 {
+                vc.isFirst = true
+            }
+            return vc
+        }
     }
 }

@@ -59,6 +59,8 @@ Moya 封装，全局函数式调用（不是类方法）：
 
 语义色全部带深色模式适配（`UIColor(hex:darkHex:)`）：`.bgColor` 页面背景、`.themeColor` 主题橙 #FF7A2E、`.textPrimaryColor/textSecondaryColor/textTertiaryColor` 三级文字、`.cellBgColor`、`.separatorColor`、`.readingBgColor` 阅读页护眼底色等。**不要在业务代码里写裸 hex**，加色先在这里补语义定义。
 
+完整 UI 风格规范（字号/间距/圆角阶梯、组件样式、Code Review 检查项）见 `docs/UI-Style-Guide.md`，写 UI 代码前先对齐该文档。
+
 ### 目录约定
 
 ```
@@ -76,6 +78,6 @@ novelplant/
 
 ## 已知遗留问题
 
-- `gotoLogin()` 是空实现（`LoginViewController` 已存在于 `Main/Login/`），401 登出流程尚未接通。
+- `gotoLogin()` 已接通（present `LoginViewController`，苹果登录已实现）；401/登出跳登录的完整流程尚未接通（网络层现为 code==0/10003 体系）。
 - 文件头注释为 "Moyi"（2023 年）的文件是从旧项目拷贝的，属正常情况。
 - Assets.xcassets 目前只有 AppIcon/AccentColor，`"left"` 返回按钮切图及 tabbar 切图均未导入，当前 tab 图标走 SF Symbols。

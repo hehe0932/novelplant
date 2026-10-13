@@ -49,5 +49,8 @@ extension MeViewController: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        present(LoginViewController(), animated: true)
+    }
     
 }

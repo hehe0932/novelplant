@@ -164,9 +164,8 @@ func dictionary(toJson dic: AnyObject?) -> String? {
 
 
 func gotoLogin() {
-//    let loginVC = BaseNavigationController(rootViewController: LoginViewController())
-//    currentViewController.present(loginVC, animated: true)
-
+    let loginVC = BaseNavigationController(rootViewController: LoginViewController())
+    currentViewController.present(loginVC, animated: true)
 }
 
 func logoutUser() {

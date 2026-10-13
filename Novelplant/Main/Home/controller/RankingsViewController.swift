@@ -1,13 +1,13 @@
 //
-//  LibraryViewController.swift
+//  RankingsViewController.swift
 //  novelplant
 //
-//  Created by hehe on 2026/10/9.
-//
+//  Created by hehe on 2026/10/10.
+//  排行榜
 
 import UIKit
 
-class LibraryViewController: BaseViewController {
+class RankingsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,4 +26,9 @@ class LibraryViewController: BaseViewController {
     }
     */
 
+}
+extension RankingsViewController: JXSegmentedListContainerViewListDelegate {
+    func listView() -> UIView {
+        view
+    }
 }

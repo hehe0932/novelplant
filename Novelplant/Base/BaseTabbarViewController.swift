@@ -15,6 +15,7 @@ class BaseTabbarViewController: UITabBarController {
         setupViews()
         addChildVC()
         
+        selectedIndex = 1
     }
 
     private func setupViews() {
@@ -28,6 +29,8 @@ class BaseTabbarViewController: UITabBarController {
 
         addChildController(title: NSLocalizedString("Library", comment: ""), controller: LibraryViewController(), imageName: "books.vertical", selectedImageName: "books.vertical.fill")
         
+        addChildController(title: NSLocalizedString("Rewards", comment: ""), controller: RewardsViewController(), imageName: "person", selectedImageName: "person.fill")
+        
         addChildController(title: NSLocalizedString("Me", comment: ""), controller: MeViewController(), imageName: "person", selectedImageName: "person.fill")
     }
     
@@ -36,7 +39,7 @@ class BaseTabbarViewController: UITabBarController {
         controller.title = title
         controller.tabBarItem.image = UIImage(named: imageName) ?? UIImage(systemName: imageName)
         controller.tabBarItem.selectedImage = UIImage(named: selectedImageName) ?? UIImage(systemName: selectedImageName)
-        
+    
         let nav = BaseNavigationController(rootViewController: controller)
         
         addChild(nav)

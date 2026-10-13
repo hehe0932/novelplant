@@ -40,6 +40,18 @@ extension UIColor {
 
     /// 弹窗/菜单遮罩色
     static let maskColor = UIColor(hex: "#000000", darkHex: "#000000", alpha: 0.4, darkAlpha: 0.6)
+
+    /// 图片占位底色（封面/头像等加载前的灰底）
+    static let placeholderColor = UIColor(hex: "#E9EBF0", darkHex: "#2A2A2A")
+
+    /// Apple 登录按钮底色（对齐 Apple 官方按钮：浅色黑底 / 深色白底）
+    static let appleBtnBgColor = UIColor(hex: "#000000", darkHex: "#FFFFFF")
+
+    /// Apple 登录按钮图文色（对齐 Apple 官方按钮：浅色白字 / 深色黑字）
+    static let appleBtnTitleColor = UIColor(hex: "#FFFFFF", darkHex: "#000000")
+
+    /// 主题色底上的前景色（主按钮白字、选中态勾选图标，两种模式恒为白）
+    static let onThemeColor = UIColor(hex: "#FFFFFF", darkHex: "#FFFFFF")
 }
 extension UIColor {
     

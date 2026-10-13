@@ -42,6 +42,7 @@ class MeHeaderView: UIView {
         arrowImageView.snp.makeConstraints { make in
             make.right.equalTo(-16)
             make.centerY.equalTo(profileImageView)
+            make.size.equalTo(12)
         }
     }
     

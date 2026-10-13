@@ -13,7 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        setupRealm()
+//        NetWorkRequest(LoginManager.guestLogin) { result in
+//            
+//        }
         return true
     }
 
@@ -32,5 +36,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    ///数据库
+    private func setupRealm() {
+        
+        var config = Realm.Configuration()
+        config.schemaVersion = 2
+        Realm.Configuration.defaultConfiguration = config
+        Realm.asyncOpen { result in
+            switch result {
+            case .success(let realm):
+                print("配置成功--\(realm)")
+            case .failure(let error):
+                print("配置失败--\(error)")
+            }
+        }
+
+    }
 }
 
